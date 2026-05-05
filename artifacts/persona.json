@@ -1,0 +1,63 @@
+{
+  "target_speaker": "User 1",
+  "habits": [
+    {
+      "label": "Committed to professional culinary development",
+      "evidence_msg_id": 5,
+      "evidence": "I'm moving to Portland, Oregon.  I'm going to be pursuing my culinary dreams there.",
+      "confidence": "High"
+    },
+    {
+      "label": "Actively pursuing higher education or specialized training",
+      "evidence_msg_id": 17,
+      "evidence": "I'm doing great! I'm a fulltime student studying radiology at a local college and I also play in a band that my parents don't know about.",
+      "confidence": "High"
+    }
+  ],
+  "personal_facts": [
+    {
+      "label": "Managing a significant life transition (relocation)",
+      "evidence_msg_id": 3,
+      "evidence": "I'm doing pretty well.  I'm excited to be moving to a new city soon!",
+      "confidence": "High"
+    },
+    {
+      "label": "Focused on long-term professional aspirations and career growth",
+      "evidence_msg_id": 5,
+      "evidence": "I'm moving to Portland, Oregon.  I'm going to be pursuing my culinary dreams there.",
+      "confidence": "High"
+    },
+    {
+      "label": "Maintains strong focus on familial relationships and dynamics",
+      "evidence_msg_id": 17,
+      "evidence": "I'm doing great! I'm a fulltime student studying radiology at a local college and I also play in a band that my parents don't know about.",
+      "confidence": "High"
+    }
+  ],
+  "personality_traits": [
+    {
+      "label": "Ambitious and Goal-Oriented",
+      "evidence_msg_id": 5,
+      "evidence": "I'm moving to Portland, Oregon.  I'm going to be pursuing my culinary dreams there.",
+      "confidence": "High"
+    },
+    {
+      "label": "Resilient and Adaptive",
+      "evidence_msg_id": 3,
+      "evidence": "I'm doing pretty well.  I'm excited to be moving to a new city soon!",
+      "confidence": "High"
+    },
+    {
+      "label": "Emotionally Articulate",
+      "evidence_msg_id": 3,
+      "evidence": "I'm doing pretty well.  I'm excited to be moving to a new city soon!",
+      "confidence": "High"
+    }
+  ],
+  "communication_style": [],
+  "stats": {
+    "total_messages": 98079,
+    "meaningful_messages": 84913,
+    "avg_message_length": 55.33
+  }
+}
