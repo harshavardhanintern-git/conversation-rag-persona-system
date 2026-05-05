@@ -1,55 +1,96 @@
-# Conversation RAG + Persona Extraction System (Final Evaluator Build)
+# Conversation RAG + Persona Extraction System
 
-A production-quality system for analyzing conversation histories using a high-signal retrieval pipeline and evidence-driven persona extraction. This build focuses on strict filtering to eliminate noise and ensure all insights are anchored in meaningful conversation evidence.
+A system that processes conversation data in chronological order and builds a Retrieval-Augmented Generation (RAG) pipeline with dynamic topic checkpoints and evidence-based persona extraction.
+
+---
 
 ## 🚀 Key Features
 
-### 1. Advanced Topic Optimization
-- **Segmentation**: Chronological message streams are segmented using thematic shift detection.
-- **Hierarchical Merging**: Adjacent topics are merged if their semantic vectors share > 65% similarity.
-- **Noise Reduction**: Topics with fewer than 5 messages are merged into the closest adjacent topic when possible, otherwise removed.
-- **Optimization Goal**: Target < 10,000 topics for efficient retrieval at scale.
+### 1. Chronological Topic Checkpoints
 
-### 2. High-Signal Persona Extraction (Strict Filtering)
-- **Hard Filters**: 
-  - Messages shorter than **25 characters** are ignored.
-  - Greetings, generic filler phrases ("Hi", "How are you", "Good"), and identity-only messages are stripped.
-- **Evidence Threshold**: Personality traits require a **minimum of 2 independent evidence points** to be included.
-- **Categorization**: Focuses exclusively on high-signal attributes:
-  - **Ambitious & Goal-Oriented**: Professional aspirations and skill development.
-  - **Life Events**: Major transitions like relocation or educational milestones.
-  - **Emotional Articulation**: Authentic expressions of sentiment grounded in life context.
+- Conversations are processed **message by message in chronological order**
+- Topic changes are detected using **embedding similarity**
+- A new topic is created when:
+  - similarity < **0.45**
+  - current topic size ≥ **8 messages**
+- Adjacent topics are merged when similarity > **0.65**
+- Topics with very few messages are merged or removed
 
-### 3. Precision Retrieval & Answer Pipeline
-- **Retrieval Guardrails**: 
-  - Similarity score must exceed **0.30**.
-  - All retrieved evidence is filtered for length and contextuality before being presented.
-- **Structured Answering**:
-  - Every answer begins with an explicit anchor: *"Based on conversation evidence..."*.
-  - Direct evidence lines are quoted to ensure traceability.
-  - Avoids generic adjectives; uses analytical, evidence-backed summaries.
+👉 This ensures topics represent meaningful conversation segments instead of fixed chunks.
 
-## 🛠️ Execution Steps
+---
 
-1. **Environment Setup**:
-   ```bash
-   python -m venv venv
-   .\venv\Scripts\Activate.ps1
-   pip install streamlit pandas scikit-learn sentence-transformers faiss-cpu joblib tqdm
-   ```
+### 2. 100-Message Checkpoints
 
-2. **Index Generation**:
-   Rebuild retrieval artifacts with strict filtering enabled.
-   ```bash
-   python src/build_index.py --csv data/conversations.csv
-   ```
+- For every **100 messages**, a summary is generated
+- These checkpoints are **independent of topics**
+- Used as an additional retrieval layer for long conversations
 
-3. **Launch Application**:
-   ```bash
-   streamlit run app.py
-   ```
+---
 
-## 📐 Logic & Design Decisions
-- **Threshold Logic**: The 0.45 similarity threshold for initial segmentation, combined with the 0.65 merge threshold, ensures that conversation segments represent distinct "mini-episodes" rather than random fragments.
-- **Rule-Based Filtering**: Explicitly removes conversational noise (greetings/filler) before the indexing phase to prevent the system from "hallucinating" persona traits based on trivial interactions.
-- **Traceability**: Every insight includes a Msg ID or direct quote, ensuring that evaluators can verify findings against the raw dataset.
+### 3. Retrieval Pipeline
+
+When a user asks a question:
+
+- Retrieve relevant **topic summaries**
+- Retrieve relevant **message chunks**
+- Apply filtering:
+  - similarity score > **0.30**
+  - remove short or irrelevant messages
+- Combine both sources to generate the final answer
+
+👉 This ensures retrieval is relevant and not random.
+
+---
+
+### 4. Persona Extraction (Evidence-Based)
+
+Persona is extracted using **rule-based filtering + conversation signals**.
+
+#### Filtering Rules:
+- Ignore messages < **25 characters**
+- Remove greetings and filler text
+- Only consider meaningful content
+
+#### Trait Extraction:
+- Each trait requires **minimum 2 supporting messages**
+- Traits are derived from:
+  - habits
+  - personal facts
+  - personality traits
+  - communication style
+
+#### Output:
+- Stored in structured **JSON format**
+- Each trait includes:
+  - label
+  - evidence (message text)
+  - message ID
+  - confidence level
+
+👉 No assumptions — only evidence-driven insights.
+
+---
+
+### 5. Chatbot
+
+The system answers:
+
+- What kind of person is this user?
+- What are their habits?
+- How do they talk?
+
+It uses:
+- RAG pipeline (topics + messages)
+- Persona data
+
+👉 Answers are grounded in retrieved evidence.
+
+---
+
+## 🛠️ How to Run
+
+```bash
+pip install -r requirements.txt
+python src/build_index.py --csv data/conversations.csv
+streamlit run app.py
