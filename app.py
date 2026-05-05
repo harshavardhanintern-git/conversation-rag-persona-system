@@ -145,3 +145,29 @@ with tab_persona:
         st.write(f"- **Total Messages Analyzed:** {stats.get('total_messages', 0)}")
         st.write(f"- **Meaningful Messages:** {stats.get('meaningful_messages', 'N/A')}")
         st.write(f"- **Avg Length:** {stats.get('avg_message_length', 0)} chars")
+st.markdown("""
+<style>
+.block-container {
+    padding-top: 2rem;
+}
+
+.stTextInput>div>div>input {
+    background-color: #161b22;
+    color: white;
+    border-radius: 10px;
+}
+
+.stButton>button {
+    background-color: #ff4b4b;
+    color: white;
+    border-radius: 10px;
+    padding: 10px 20px;
+}
+
+.stMetric {
+    background-color: #161b22;
+    padding: 15px;
+    border-radius: 12px;
+}
+</style>
+""", unsafe_allow_html=True)
